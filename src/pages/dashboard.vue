@@ -59,7 +59,6 @@
         class="text-body-secondary"
         >{{ post.slug }}</router-link
       >
-      <p class="text-body-secondary">{{ post.isi }}</p>
     </div>
   </div>
 </template>
@@ -82,8 +81,18 @@ export default {
 
   methods: {
     doLogout() {
-      localStorage.clear();
-      router.push("/");
+      axios
+        .post(
+          `http://127.0.0.1:8000/api/auth/logout?token=${loggedIn.data.token}`
+        )
+        .then((res) => {
+          console.log(res);
+          localStorage.clear();
+          router.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 

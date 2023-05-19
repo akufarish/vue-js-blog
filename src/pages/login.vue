@@ -1,8 +1,11 @@
 <template>
   <div class="center-card">
-    <div class="card" style="width: 18rem">
+    <div class="card shadow-lg rounded-3" style="width: 18rem">
       <div class="card-body">
-        <h3 class="text-center mb-4">Login Form</h3>
+        <div class="d-flex justify-content-center align-items-center mb-3">
+          <img src="../assets/vue.svg" width="100" />
+        </div>
+        <h3 class="text-center mb-4">Selamat datang!</h3>
         <form @submit.prevent="doLogin">
           <div class="mb-3">
             <p for="exampleInputEmail1" class="form-label">Name</p>
@@ -17,7 +20,14 @@
               v-model="users.password"
             />
           </div>
-          <button type="submit" class="btn btn-primary w-100">Submit</button>
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+          <button
+            type="submit"
+            @click.prevent="doRegister"
+            class="btn btn-primary w-100 mt-3"
+          >
+            Register
+          </button>
         </form>
       </div>
     </div>
@@ -38,6 +48,21 @@ export default {
     doLogin() {
       axios
         .post("http://127.0.0.1:8000/api/auth/login", {
+          name: this.users.name,
+          password: this.users.password,
+        })
+        .then((res) => {
+          console.log(res);
+          localStorage.setItem("users", JSON.stringify(res.data));
+          router.push("/dashboard");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    doRegister() {
+      axios
+        .post("http://127.0.0.1:8000/api/auth/register", {
           name: this.users.name,
           password: this.users.password,
         })
